@@ -1,2 +1,2 @@
 # juniorDevChallenge
-Junior Developer challenge for El07
+Junior Developer challenge for Elo7
