@@ -1,9 +1,55 @@
 package com.elo7.junior.dev.challenge.framework;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.elo7.junior.dev.challenge.entity.Rocket;
+import com.elo7.junior.dev.challenge.usecase.RocketUseCase;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/planet/v1")
+@RequestMapping("/rocket/v1")
 public class RocketResource {
+
+    RocketUseCase rocketUseCase;
+
+    @PostMapping("")
+    public Rocket createRocket() {
+        return rocketUseCase.createRocket();
+    }
+
+    @GetMapping("")
+    public List<Rocket> getAllRockets() {
+        return rocketUseCase.getAllRockets();
+    }
+
+    @GetMapping("/{id}")
+    public Rocket getRocketById(
+            @PathVariable(value = "id") long rocketId) {
+        return rocketUseCase.getRocketById(rocketId);
+    }
+
+    @PutMapping("/{id}/moveRocket/{movementList}")
+    public Rocket moveRocketBy(
+            @PathVariable(value = "id") long rocketId,
+            @PathVariable(value = "movementList") String movementList) throws Exception {
+        return rocketUseCase.moveRocketById(rocketId, movementList);
+    }
+
+    @PutMapping("/{id}/sendToPlanet/{planetId}")
+    public Rocket sendToPlanet(
+            @PathVariable(value = "id") long rocketId,
+            @PathVariable(value = "planetId") long planetId) throws Exception {
+        return rocketUseCase.sendToPlanet(rocketId, planetId);
+    }
+
+    @PutMapping("/{id}/recallRocket")
+    public Rocket recallRocket(
+            @PathVariable(value = "id") long rocketId) throws Exception {
+        return rocketUseCase.recallRocket(rocketId);
+    }
+
+    @DeleteMapping("/{id}")
+    public String destroyRocket(@PathVariable(value = "id") long rocketId) throws Exception {
+        return rocketUseCase.destroyRocket(rocketId);
+    }
 }
