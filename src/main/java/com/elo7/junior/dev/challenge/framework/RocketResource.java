@@ -31,25 +31,25 @@ public class RocketResource {
     @PutMapping("/{id}/moveRocket/{movementList}")
     public Rocket moveRocketBy(
             @PathVariable(value = "id") long rocketId,
-            @PathVariable(value = "movementList") String movementList) throws Exception {
+            @PathVariable(value = "movementList") String movementList) {
         return rocketUseCase.moveRocketById(rocketId, movementList);
     }
 
     @PutMapping("/{id}/sendToPlanet/{planetId}")
     public Rocket sendToPlanet(
             @PathVariable(value = "id") long rocketId,
-            @PathVariable(value = "planetId") long planetId) throws Exception {
+            @PathVariable(value = "planetId") long planetId) {
         return rocketUseCase.sendToPlanet(rocketId, planetId);
     }
 
     @PutMapping("/{id}/recallRocket")
     public Rocket recallRocket(
-            @PathVariable(value = "id") long rocketId) throws Exception {
+            @PathVariable(value = "id") long rocketId) {
         return rocketUseCase.recallRocket(rocketId);
     }
 
     @DeleteMapping("/{id}")
-    public String destroyRocket(@PathVariable(value = "id") long rocketId) throws Exception {
+    public String destroyRocket(@PathVariable(value = "id") long rocketId) {
         return rocketUseCase.destroyRocket(rocketId);
     }
 }
