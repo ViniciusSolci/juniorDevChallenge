@@ -1,21 +1,24 @@
 package com.elo7.junior.dev.challenge.entity;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.awt.*;
 
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Entity
 @Table(name = "rocket")
 @EntityListeners(AuditingEntityListener.class)
 public class Rocket {
+
+    public Rocket() {
+        this.setCoordinates(new Point(0, 0));
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,10 +31,11 @@ public class Rocket {
     @Column(name = "facing_direction")
     private String facingDirection;
 
-    @Column(name = "coordinates")
-    private String coordinates;
+    @Column(name = "x_coordinate")
+    private int xCoordinates = this.coordinates.x;
 
-    private Integer xCoordinate;
+    @Column(name = "y_coordinate")
+    private int yCoordinates = this.coordinates.y;
 
-    private Integer yCoordinate;
+    private Point coordinates;
 }

@@ -35,7 +35,7 @@ public class PlanetResource {
     }
 
     @DeleteMapping("/{id}")
-    public String deletePlanetById(@PathVariable(value = "id") long planetId) throws Exception {
+    public String deletePlanetById(@PathVariable(value = "id") long planetId) {
         return planetUseCase.deletePlanet(planetId);
     }
 }
