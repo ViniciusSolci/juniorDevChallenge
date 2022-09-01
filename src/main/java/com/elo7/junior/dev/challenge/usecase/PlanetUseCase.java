@@ -31,7 +31,8 @@ public class PlanetUseCase {
             planet.setSize(planetDTO.getSize());
 
             return planetRepository.save(planet);
-        } else throw new InvalidPlanetSize(HttpStatus.NOT_ACCEPTABLE, "Planet size must be in the format \"number\"x\"number\"");
+        } else
+            throw new InvalidPlanetSize(HttpStatus.NOT_ACCEPTABLE, "Planet size must be in the format \"number\"x\"number\"");
 
 
     }
@@ -49,12 +50,14 @@ public class PlanetUseCase {
     }
 
     public String deletePlanet(long planetId) {
-        if (planetId == 0) throw new ForbiddenPlanetDestruction(HttpStatus.NOT_ACCEPTABLE, "Home planet cannot be destroyed");
+        if (planetId == 0)
+            throw new ForbiddenPlanetDestruction(HttpStatus.NOT_ACCEPTABLE, "Home planet cannot be destroyed");
 
         List<Rocket> rocketList = getRocketsInPlanet(planetId);
         if (rocketList.isEmpty()) {
             planetRepository.deleteById(planetId);
             return "Planet deleted";
-        } else throw new ForbiddenPlanetDestruction(HttpStatus.PRECONDITION_FAILED, "Planets with allocated rockets cannot be destroyed");
+        } else
+            throw new ForbiddenPlanetDestruction(HttpStatus.PRECONDITION_FAILED, "Planets with allocated rockets cannot be destroyed");
     }
 }

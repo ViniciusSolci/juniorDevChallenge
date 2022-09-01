@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface RocketRepository extends JpaRepository<Rocket, Long> {
     @Query(value = "SELECT r.* FROM rocket r where r.allocated_planet_id = :planetId",
-           nativeQuery = true)
+            nativeQuery = true)
     List<Rocket> findByPlanetId(@Param("planetId") long planetId);
 }
