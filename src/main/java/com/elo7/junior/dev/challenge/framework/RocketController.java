@@ -2,22 +2,26 @@ package com.elo7.junior.dev.challenge.framework;
 
 import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.usecase.RocketUseCase;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/rocket/v1")
-public class RocketResource {
+@RequestMapping("/v1/rocket")
+public class RocketController {
 
     RocketUseCase rocketUseCase;
 
-    @PostMapping("")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Rocket createRocket() {
         return rocketUseCase.createRocket();
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Rocket> getAllRockets() {
         return rocketUseCase.getAllRockets();
     }
@@ -28,10 +32,10 @@ public class RocketResource {
         return rocketUseCase.getRocketById(rocketId);
     }
 
-    @PutMapping("/{id}/moveRocket/{movementList}")
+    @PostMapping("/{id}/move/{movementList}")
     public Rocket moveRocketBy(
             @PathVariable(value = "id") long rocketId,
-            @PathVariable(value = "movementList") String movementList) {
+            @PathVariable(value = "movementList") List<Rocket.MOVEMENT_TYPE> movementList) {
         return rocketUseCase.moveRocketById(rocketId, movementList);
     }
 
@@ -42,14 +46,15 @@ public class RocketResource {
         return rocketUseCase.sendToPlanet(rocketId, planetId);
     }
 
-    @PutMapping("/{id}/recallRocket")
+    @PutMapping("/{id}/recall")
     public Rocket recallRocket(
             @PathVariable(value = "id") long rocketId) {
         return rocketUseCase.recallRocket(rocketId);
     }
 
     @DeleteMapping("/{id}")
-    public String destroyRocket(@PathVariable(value = "id") long rocketId) {
-        return rocketUseCase.destroyRocket(rocketId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void destroyRocket(@PathVariable(value = "id") long rocketId) {
+        rocketUseCase.destroyRocket(rocketId);
     }
 }
