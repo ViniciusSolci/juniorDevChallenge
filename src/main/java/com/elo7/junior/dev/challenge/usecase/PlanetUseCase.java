@@ -3,36 +3,35 @@ package com.elo7.junior.dev.challenge.usecase;
 import com.elo7.junior.dev.challenge.entity.Planet;
 import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.framework.PlanetDTO;
-import com.elo7.junior.dev.challenge.framework.exception.ForbiddenPlanetDestruction;
-import com.elo7.junior.dev.challenge.framework.exception.InvalidPlanetSize;
+import com.elo7.junior.dev.challenge.framework.exception.ForbiddenPlanetDestructionException;
 import com.elo7.junior.dev.challenge.repository.PlanetRepository;
 import com.elo7.junior.dev.challenge.repository.RocketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
+@Service
 public class PlanetUseCase {
-    @Autowired
-    RocketRepository rocketRepository;
 
-    @Autowired
-    PlanetRepository planetRepository;
+    private final @NonNull RocketRepository rocketRepository;
+
+    private final @NonNull PlanetRepository planetRepository;
 
     public Planet createPlanet(PlanetDTO planetDTO) {
         Planet planet = new Planet();
         planet.setName(planetDTO.getName());
 
-        String[] planetSize = planetDTO.getSize().split("x");
-        String planetXSize = planetSize[0];
-        String planetYSize = planetSize[1];
+        String[] planetSize = planetDTO.getSize().split("[xX]");
+        int planetXSize = Integer.parseInt(planetSize[0]);
+        int planetYSize = Integer.parseInt(planetSize[1]);
 
-        if (planetXSize.matches("\\d+") && planetYSize.matches("\\d+")) {
-            planet.setSize(planetDTO.getSize());
-
-            return planetRepository.save(planet);
-        } else
-            throw new InvalidPlanetSize(HttpStatus.NOT_ACCEPTABLE, "Planet size must be in the format \"number\"x\"number\"");
+        planet.setXSize(planetXSize);
+        planet.setYSize(planetYSize);
+        return planetRepository.save(planet);
 
 
     }
@@ -42,22 +41,21 @@ public class PlanetUseCase {
     }
 
     public Planet getPlanetById(long planetId) {
-        return planetRepository.getReferenceById(planetId);
+        return planetRepository.findById(planetId).orElseThrow();
     }
 
     public List<Rocket> getRocketsInPlanet(long planetId) {
-        return rocketRepository.findByPlanetId(planetId);
+        return rocketRepository.findByAllocatedPlanetId(planetId);
     }
 
-    public String deletePlanet(long planetId) {
+    public void deletePlanet(long planetId) {
         if (planetId == 0)
-            throw new ForbiddenPlanetDestruction(HttpStatus.NOT_ACCEPTABLE, "Home planet cannot be destroyed");
+            throw new ForbiddenPlanetDestructionException(HttpStatus.UNPROCESSABLE_ENTITY, "Home planet cannot be destroyed");
 
         List<Rocket> rocketList = getRocketsInPlanet(planetId);
         if (rocketList.isEmpty()) {
             planetRepository.deleteById(planetId);
-            return "Planet deleted";
         } else
-            throw new ForbiddenPlanetDestruction(HttpStatus.PRECONDITION_FAILED, "Planets with allocated rockets cannot be destroyed");
+            throw new ForbiddenPlanetDestructionException(HttpStatus.UNPROCESSABLE_ENTITY, "Planets with allocated rockets cannot be destroyed");
     }
 }

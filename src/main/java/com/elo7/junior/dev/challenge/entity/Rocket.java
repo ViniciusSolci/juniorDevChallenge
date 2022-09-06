@@ -29,13 +29,33 @@ public class Rocket {
     private long allocatedPlanetId;
 
     @Column(name = "facing_direction")
-    private String facingDirection;
+    private FACING_DIRECTION facingDirection;
 
     @Column(name = "x_coordinate")
-    private int xCoordinates = this.coordinates.x;
+    private int xCoordinate;
 
     @Column(name = "y_coordinate")
-    private int yCoordinates = this.coordinates.y;
+    private int yCoordinate;
 
-    private Point coordinates;
+    public Point getPointCoordinates() {
+        return new Point(xCoordinate, yCoordinate);
+    }
+
+    public void setCoordinates(Point coordinates) {
+        this.xCoordinate = coordinates.x;
+        this.yCoordinate = coordinates.y;
+    }
+
+    public enum FACING_DIRECTION {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }
+
+    public enum MOVEMENT_TYPE {
+        FORWARD,
+        LEFT,
+        RIGHT
+    }
 }

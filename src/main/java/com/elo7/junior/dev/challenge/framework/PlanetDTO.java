@@ -1,14 +1,17 @@
 package com.elo7.junior.dev.challenge.framework;
 
-import lombok.Data;
+import lombok.Value;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
-@Data
+@Value
 public class PlanetDTO {
-    @Column(name = "name", nullable = false)
-    private String name;
+    private static final String SIZE_PATTERN = "^\\d*([xX])\\d*$";
 
-    @Column(name = "size", nullable = false)
-    private String size;
+    @NotBlank(message = "Plane name is mandatory")
+    String name;
+
+    @Pattern(regexp = SIZE_PATTERN, message = "Planet size must be in the format \"number\"x\"number\"")
+    String size;
 }

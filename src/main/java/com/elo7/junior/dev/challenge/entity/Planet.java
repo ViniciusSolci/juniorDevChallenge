@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "planet")
 @EntityListeners(AuditingEntityListener.class)
 public class Planet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -24,6 +25,9 @@ public class Planet {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "size", nullable = false)
-    private String size;
+    @Column(name = "x_size", nullable = false)
+    private int xSize;
+
+    @Column(name = "y_size", nullable = false)
+    private int ySize;
 }
