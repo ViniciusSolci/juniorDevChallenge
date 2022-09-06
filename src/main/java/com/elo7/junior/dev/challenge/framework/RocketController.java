@@ -4,6 +4,7 @@ import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.usecase.RocketUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("/v1/rocket")
 public class RocketController {
 
-    RocketUseCase rocketUseCase;
+    private final @NonNull RocketUseCase rocketUseCase;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

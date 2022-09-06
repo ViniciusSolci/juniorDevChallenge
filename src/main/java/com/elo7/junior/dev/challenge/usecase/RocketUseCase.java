@@ -6,11 +6,13 @@ import com.elo7.junior.dev.challenge.repository.RocketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class RocketUseCase {
 
     private final @NonNull RocketRepository rocketRepository;

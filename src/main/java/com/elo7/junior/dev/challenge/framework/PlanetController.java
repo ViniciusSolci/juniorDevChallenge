@@ -3,6 +3,7 @@ package com.elo7.junior.dev.challenge.framework;
 import com.elo7.junior.dev.challenge.entity.Planet;
 import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.usecase.PlanetUseCase;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/planet")
 public class PlanetController {
 
-    PlanetUseCase planetUseCase;
+    private final @NonNull PlanetUseCase planetUseCase;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

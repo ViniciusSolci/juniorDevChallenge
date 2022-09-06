@@ -6,12 +6,14 @@ import com.elo7.junior.dev.challenge.framework.exception.NoSpaceLeftForLandingsE
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
 public class RocketMovementValidator {
 
     private final @NonNull PlanetUseCase planetUseCase;
