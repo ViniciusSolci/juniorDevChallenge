@@ -36,17 +36,20 @@ public class RocketUseCase {
         return rocketRepository.findById(rocketId).orElseThrow();
     }
 
-    public Rocket moveRocketById(long rocketId, List<Rocket.MOVEMENT_TYPE> movementList) {
+    public Rocket moveRocketById(long rocketId, String movementList) {
         Rocket rocket = getRocketById(rocketId);
-        for (Rocket.MOVEMENT_TYPE movement : movementList) {
-            switch (movement) {
-                case FORWARD:
+        if (rocket.getAllocatedPlanetId() == 0) {
+            throw new UnallocatedRocketException(HttpStatus.UNPROCESSABLE_ENTITY, "Rocket must be allocated before moving");
+        }
+        for (String movement : movementList.split("")) {
+            switch (movement.toLowerCase()) {
+                case "m":
                     moveRocketForward(rocket);
                     break;
-                case LEFT:
+                case "l":
                     turnRocketLeft(rocket);
                     break;
-                case RIGHT:
+                case "r":
                     turnRocketRight(rocket);
                     break;
                 default:
@@ -123,9 +126,9 @@ public class RocketUseCase {
     public Rocket sendToPlanet(long rocketId, long planetId) {
         Rocket rocket = getRocketById(rocketId);
         if (rocket.getAllocatedPlanetId() == planetId) {
-            throw new RocketAlreadyAtPlanetException(HttpStatus.PRECONDITION_FAILED, "Rocket already allocated at destiny planet");
+            throw new RocketAlreadyAtPlanetException(HttpStatus.UNPROCESSABLE_ENTITY, "Rocket already allocated at destiny planet");
         } else if (rocket.getAllocatedPlanetId() != 0) {
-            throw new RocketAlreadyAtPlanetException(HttpStatus.PRECONDITION_FAILED, "Rocket already allocated at planet. Rocket must be recalled before sent to a new planet");
+            throw new RocketAlreadyAtPlanetException(HttpStatus.UNPROCESSABLE_ENTITY, "Rocket already allocated at planet. Rocket must be recalled before sent to a new planet");
         }
 
         rocketMovementValidator.validatedLandingPosition(rocket, planetId);
@@ -143,7 +146,7 @@ public class RocketUseCase {
             rocket.setAllocatedPlanetId(0);
             return rocketRepository.save(rocket);
         } else
-            throw new UnallocatedRocketException(HttpStatus.PRECONDITION_FAILED, "Rocket is not allocated. Only allocated rockets can be recalled");
+            throw new UnallocatedRocketException(HttpStatus.UNPROCESSABLE_ENTITY, "Rocket is not allocated. Only allocated rockets can be recalled");
     }
 
     public void destroyRocket(long rocketId) {
@@ -152,6 +155,6 @@ public class RocketUseCase {
         if (rocket.getAllocatedPlanetId() == 0) {
             rocketRepository.delete(rocket);
         } else
-            throw new AllocatedRocketException(HttpStatus.PRECONDITION_FAILED, "Rocket must be recalled before it's destroyed");
+            throw new AllocatedRocketException(HttpStatus.UNPROCESSABLE_ENTITY, "Rocket must be recalled before it's destroyed");
     }
 }
