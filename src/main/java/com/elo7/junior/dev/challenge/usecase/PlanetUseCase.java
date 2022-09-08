@@ -32,8 +32,6 @@ public class PlanetUseCase {
         planet.setXSize(planetXSize);
         planet.setYSize(planetYSize);
         return planetRepository.save(planet);
-
-
     }
 
     public List<Planet> getAllPlanets() {

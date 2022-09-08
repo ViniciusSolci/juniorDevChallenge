@@ -34,20 +34,20 @@ public class RocketController {
     }
 
     @PostMapping("/{id}/move/{movementList}")
-    public Rocket moveRocketBy(
+    public Rocket moveRocketById(
             @PathVariable(value = "id") long rocketId,
-            @PathVariable(value = "movementList") List<Rocket.MOVEMENT_TYPE> movementList) {
+            @PathVariable(value = "movementList") String movementList) {
         return rocketUseCase.moveRocketById(rocketId, movementList);
     }
 
-    @PutMapping("/{id}/sendToPlanet/{planetId}")
+    @PostMapping("/{id}/sendToPlanet/{planetId}")
     public Rocket sendToPlanet(
             @PathVariable(value = "id") long rocketId,
             @PathVariable(value = "planetId") long planetId) {
         return rocketUseCase.sendToPlanet(rocketId, planetId);
     }
 
-    @PutMapping("/{id}/recall")
+    @PostMapping("/{id}/recall")
     public Rocket recallRocket(
             @PathVariable(value = "id") long rocketId) {
         return rocketUseCase.recallRocket(rocketId);

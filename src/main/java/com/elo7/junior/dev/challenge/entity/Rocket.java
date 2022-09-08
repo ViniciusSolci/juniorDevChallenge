@@ -52,10 +52,4 @@ public class Rocket {
         SOUTH,
         WEST
     }
-
-    public enum MOVEMENT_TYPE {
-        FORWARD,
-        LEFT,
-        RIGHT
-    }
 }
