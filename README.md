@@ -1,7 +1,7 @@
 
-# Consumer API
+# Rocket Control API
 
-API to consume IoT sensor data from Kafka and provide a visualization of the data.
+API create and control rockets and planets
 
 ## Technologies
 
