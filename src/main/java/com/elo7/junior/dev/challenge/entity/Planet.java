@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.awt.*;
 
 @Getter
 @Setter
@@ -25,9 +26,6 @@ public class Planet {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "x_size", nullable = false)
-    private int xSize;
-
-    @Column(name = "y_size", nullable = false)
-    private int ySize;
+    @Column(name = "size", nullable = false)
+    private Point size;
 }

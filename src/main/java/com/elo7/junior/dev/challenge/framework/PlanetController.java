@@ -5,13 +5,14 @@ import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.usecase.PlanetUseCase;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,9 +27,11 @@ public class PlanetController {
         return planetUseCase.createPlanet(planetDTO);
     }
 
-    @GetMapping
-    public List<Planet> getAllPlanets() {
-        return planetUseCase.getAllPlanets();
+    @GetMapping("")
+    public Slice<Planet> getAllPlanets(@RequestParam Optional<Integer> pageNumber, @RequestParam Optional<Integer> pageSize) {
+        if (pageNumber.isPresent() && pageSize.isPresent()) {
+            return planetUseCase.getAllPlanets(pageNumber.get(), pageSize.get());
+        } else return planetUseCase.getAllPlanets();
     }
 
     @GetMapping("/{id}")
@@ -37,8 +40,10 @@ public class PlanetController {
     }
 
     @GetMapping("/{id}/rockets")
-    public List<Rocket> getRocketsInPlanet(@PathVariable(value = "id") long planetId) {
-        return planetUseCase.getRocketsInPlanet(planetId);
+    public Slice<Rocket> getRocketsInPlanet(@PathVariable(value = "id") long planetId, @RequestParam Optional<Integer> pageNumber, @RequestParam Optional<Integer> pageSize) {
+        if (pageNumber.isPresent() && pageSize.isPresent()) {
+            return planetUseCase.getRocketsInPlanet(planetId, pageNumber.get(), pageSize.get());
+        } else return planetUseCase.getRocketsInPlanet(planetId);
     }
 
     @DeleteMapping("/{id}")

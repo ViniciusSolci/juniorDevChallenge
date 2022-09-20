@@ -31,20 +31,8 @@ public class Rocket {
     @Column(name = "facing_direction")
     private FACING_DIRECTION facingDirection;
 
-    @Column(name = "x_coordinate")
-    private int xCoordinate;
-
-    @Column(name = "y_coordinate")
-    private int yCoordinate;
-
-    public Point getPointCoordinates() {
-        return new Point(xCoordinate, yCoordinate);
-    }
-
-    public void setCoordinates(Point coordinates) {
-        this.xCoordinate = coordinates.x;
-        this.yCoordinate = coordinates.y;
-    }
+    @Column(name = "coordinates")
+    private Point coordinates;
 
     public enum FACING_DIRECTION {
         NORTH,

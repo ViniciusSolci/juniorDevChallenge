@@ -5,11 +5,7 @@ import lombok.Value;
 import javax.validation.constraints.NotBlank;
 
 @Value
-public class PlanetDTO {
-    @NotBlank(message = "Plane name is mandatory")
-    String name;
-
-    int length;
-
-    int width;
+public class RocketMovementDTO {
+    @NotBlank(message = "Movement list is mandatory")
+    String movementList;
 }
