@@ -38,9 +38,9 @@ class RocketControllerTest {
 
         mockMvc.perform(get("/v1/rocket"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Matchers.is(1)))
-                .andExpect(jsonPath("$[1].id", Matchers.is(2)));
+                .andExpect(jsonPath("$.content", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.content.[0].id", Matchers.is(1)))
+                .andExpect(jsonPath("$.content.[1].id", Matchers.is(2)));
     }
 
     @Test
@@ -60,10 +60,10 @@ class RocketControllerTest {
     @Test
     void moveRocketById() throws Exception {
         mockMvc.perform(post("/v1/rocket"));
-        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"size\":\"5x5\"}"));
+        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"length\":5, \"width\":5}"));
 
         mockMvc.perform(post("/v1/rocket/1/sendToPlanet/2"));
-        mockMvc.perform(post("/v1/rocket/1/move/MLrmlR"))
+        mockMvc.perform(post("/v1/rocket/1/move").contentType("application/json").content("{\"movementList\":\"MLRmlr\"}"))
                 .andExpect(jsonPath("$.allocatedPlanetId", Matchers.is(2)))
                 .andExpect(jsonPath("$.facingDirection", Matchers.is("NORTH")));
 
@@ -72,7 +72,7 @@ class RocketControllerTest {
     @Test
     void sendToPlanet() throws Exception {
         mockMvc.perform(post("/v1/rocket"));
-        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"size\":\"5x5\"}"));
+        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"length\":5, \"width\":5}"));
 
         mockMvc.perform(post("/v1/rocket/1/sendToPlanet/2"))
                 .andExpect(jsonPath("$.allocatedPlanetId", Matchers.is(2)));
@@ -81,7 +81,7 @@ class RocketControllerTest {
     @Test
     void recallRocket() throws Exception {
         mockMvc.perform(post("/v1/rocket"));
-        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"size\":\"5x5\"}"));
+        mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"length\":5, \"width\":5}"));
 
         mockMvc.perform(post("/v1/rocket/1/sendToPlanet/2"))
                 .andExpect(jsonPath("$.allocatedPlanetId", Matchers.is(2)));

@@ -19,10 +19,10 @@ public class RocketMovementValidator {
     private final @NonNull PlanetUseCase planetUseCase;
 
     public void validatedLandingPosition(Rocket rocket, long planetId) {
-        List<Point> rocketCoordinatesList = planetUseCase.getRocketsInPlanet(planetId).stream().map(Rocket::getPointCoordinates).collect(Collectors.toList());
+        List<Point> rocketCoordinatesList = planetUseCase.getRocketsInPlanet(planetId).stream().map(Rocket::getCoordinates).collect(Collectors.toList());
         Planet planet = planetUseCase.getPlanetById(planetId);
-        int planetXSize = planet.getXSize();
-        int planetYSize = planet.getYSize();
+        int planetXSize = planet.getSize().x;
+        int planetYSize = planet.getSize().y;
 
         for (int i = 0; i < planetXSize; i++) {
             for (int j = 0; j < planetYSize; j++) {
@@ -38,11 +38,11 @@ public class RocketMovementValidator {
     }
 
     public boolean validatedMovement(long planetId, Point point) {
-        List<Point> rocketCoordinatesList = planetUseCase.getRocketsInPlanet(planetId).stream().map(Rocket::getPointCoordinates).collect(Collectors.toList());
+        List<Point> rocketCoordinatesList = planetUseCase.getRocketsInPlanet(planetId).stream().map(Rocket::getCoordinates).collect(Collectors.toList());
         Planet planet = planetUseCase.getPlanetById(planetId);
-        int planetXSize = planet.getXSize();
-        int planetYSize = planet.getYSize();
+        int planetXSize = planet.getSize().x;
+        int planetYSize = planet.getSize().y;
 
-        return (point.x > planetXSize || point.y > planetYSize || rocketCoordinatesList.contains(point));
+        return (point.x < 0 || point.y < 0 || point.x > planetXSize || point.y > planetYSize || rocketCoordinatesList.contains(point));
     }
 }

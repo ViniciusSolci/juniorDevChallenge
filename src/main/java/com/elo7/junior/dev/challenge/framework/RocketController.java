@@ -3,11 +3,13 @@ package com.elo7.junior.dev.challenge.framework;
 import com.elo7.junior.dev.challenge.entity.Rocket;
 import com.elo7.junior.dev.challenge.usecase.RocketUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,8 +25,10 @@ public class RocketController {
     }
 
     @GetMapping
-    public List<Rocket> getAllRockets() {
-        return rocketUseCase.getAllRockets();
+    public Slice<Rocket> getAllRockets(@RequestParam Optional<Integer> pageNumber, @RequestParam Optional<Integer> pageSize) {
+        if (pageNumber.isPresent() && pageSize.isPresent()) {
+            return rocketUseCase.getAllRockets(pageNumber.get(), pageSize.get());
+        } else return rocketUseCase.getAllRockets();
     }
 
     @GetMapping("/{id}")
@@ -33,11 +37,11 @@ public class RocketController {
         return rocketUseCase.getRocketById(rocketId);
     }
 
-    @PostMapping("/{id}/move/{movementList}")
-    public Rocket moveRocketById(
+    @PostMapping("/{id}/move")
+    public Rocket moveRocketBy(
             @PathVariable(value = "id") long rocketId,
-            @PathVariable(value = "movementList") String movementList) {
-        return rocketUseCase.moveRocketById(rocketId, movementList);
+            @Valid @RequestBody RocketMovementDTO request) {
+        return rocketUseCase.moveRocketById(rocketId, request.getMovementList());
     }
 
     @PostMapping("/{id}/sendToPlanet/{planetId}")
