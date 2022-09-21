@@ -63,7 +63,7 @@ class RocketControllerTest {
         mockMvc.perform(post("/v1/planet").contentType("application/json").content("{\"name\":\"Planet\", \"length\":5, \"width\":5}"));
 
         mockMvc.perform(post("/v1/rocket/1/sendToPlanet/2"));
-        mockMvc.perform(post("/v1/rocket/1/move").contentType("application/json").content("MLRmlr"))
+        mockMvc.perform(post("/v1/rocket/1/move").contentType("application/json").content("{\"movementList\":\"MLRmlr\"}"))
                 .andExpect(jsonPath("$.allocatedPlanetId", Matchers.is(2)))
                 .andExpect(jsonPath("$.facingDirection", Matchers.is("NORTH")));
 

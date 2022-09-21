@@ -40,8 +40,8 @@ public class RocketController {
     @PostMapping("/{id}/move")
     public Rocket moveRocketBy(
             @PathVariable(value = "id") long rocketId,
-            @Valid @RequestBody String request) {
-        return rocketUseCase.moveRocketById(rocketId, request);
+            @Valid @RequestBody RocketMovementDTO request) {
+        return rocketUseCase.moveRocketById(rocketId, request.getMovementList());
     }
 
     @PostMapping("/{id}/sendToPlanet/{planetId}")

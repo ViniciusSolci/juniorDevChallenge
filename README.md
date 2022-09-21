@@ -29,13 +29,14 @@ API create and control rockets and planets
   - Creates a new rocket
 - **GET** /v1/rocket
   - Returns a list with all rocket. An empty list is returned if no rockets are found
+  - Can receive query parameters such as page size and page number
 - **GET** /v1/rocket/{id}
   - Returns a json with the rocket information
   - id variable expects an integer
-- **POST** /v1/rocket/{id}/move/{movementList}
+- **POST** /v1/rocket/{id}/move
   - Moves the rocket with said id according to the movement list
   - id variable expects an integer
-  - movementList variable expects a String with the movement action, such as "LMLMLMLMM". Accepted movements are "m", "l" and "r"
+  - Expects a request body such as {"movementList":"MLR"}
 - **POST** /v1/rocket/{id}/sendToPlanet/{planetId}
   - Send rocket with said id to planet with said planetId
   - id variable expects an integer
@@ -49,15 +50,17 @@ API create and control rockets and planets
 ### Planet
 - **POST** /v1/planet
   - Creates a new planet
-  - Expects a request body as {"name":"Planet", "size":"5x5"}
+  - Expects a request body such as {"name":"Planet", "size":"5x5"}
 - **GET** /v1/planet
   - Returns a list with all planets. An empty list is returned if no rockets are found
+  - Can receive query parameters such as page size and page number
 - **GET** /v1/planet/{id}
   - Returns a json with the planet information
   - id variable expects an integer
 - **GET** /v1/planet/{id}/rockets
   - Returns a list with all rockets allocated in that planet
   - id variable expects an integer
+  - Can receive query parameters such as page size and page number
 - **DELETE** /v1/planet/{id}
   - Deletes planet with said id
   - id variable expects an integer
